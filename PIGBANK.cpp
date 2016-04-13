@@ -1,43 +1,46 @@
 #include <iostream>
-#include <algorithm>
-#include <vector>
-#include <iterator>
-#define min(a,b) ( (a<b) ? (a) : (b) )
+#include <climits>
+
+#define MAX_VAL 999999999
+
+#define MIN(a,b) (a < b ? a : b)
+
+int dp[10005];
 using namespace std;
 int main() {
+    
     int t;
     cin >> t;
+    int empty, filled;
     while (t--) {
-        int empty,filled;
         cin >> empty >> filled;
-
-        int capacity = filled-empty;
         int n;
         cin >> n;
-        int weights[n],values[n];
-        int dp[capacity+1];
         
-        
-        for (int i=0;i<n;i++) 
+        int values[n], weights[n];
+        for (int i = 0; i < n; i++)
             cin >> values[i] >> weights[i];
         
-        int myWeight=0;
-        int ans = 10000000;
+        int capacity = filled - empty;
+        for (int i = 0; i < 10005; i++)
+            dp[i] = MAX_VAL;
         
         dp[0] = 0;
-        for (int i=0;i<=capacity;i++) {
-            for (int j=0; j< n; j++) {
-                if (i >= weights[j] )
-                    ans = min(dp[i-weights[j]],ans);
-                    myWeight += weights[j];
+        for (int wt = 1; wt <= capacity; wt++) {
+            
+            for (int coinIndex = 0; coinIndex < n; coinIndex++) {
+                if (weights[coinIndex] <= wt) {
+                    dp[wt] = MIN(dp[wt], dp[wt-weights[coinIndex]] + values[coinIndex]);   
+                }
             }
-
-            dp[i] = ans;
         }
-
-        if (myWeight == capacity) 
-            cout << "The minimum amount of money in the piggy-bank is " << dp[capacity] << "." << endl;
+        
+        if (dp[capacity] == MAX_VAL) {
+            cout << "This is impossible.\n";
+        }
         else
-            cout << "This is impossible." << endl;
+            cout << "The minimum amount of money in the piggy-bank is " << dp[capacity] << ".\n";
     }
+    
 }
+
