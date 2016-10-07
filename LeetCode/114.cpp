@@ -12,7 +12,7 @@ public:
     TreeNode * foo(TreeNode * root) {
         if (root == NULL) return root;
         
-        if (root->left == NULL && root->right == NULL)  return;
+        if (root->left == NULL && root->right == NULL)  return root;
         
         TreeNode * left = foo(root->left);
         TreeNode * right = foo(root->right);
