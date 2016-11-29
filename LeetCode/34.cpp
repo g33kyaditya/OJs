@@ -33,3 +33,52 @@ public:
         return ans;
     }
 };
+
+
+
+===========================================================================
+
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> ans;
+        if (nums.empty())
+            return ans;
+        int lo = 0;
+        int hi = nums.size()-1;
+        int mid;
+        int leftMost = -1;
+        while (lo <= hi) {
+            mid = (lo + hi)/2;
+            if (nums[mid] == target) {
+                leftMost = mid;
+                hi = mid - 1;
+            }
+            else if (nums[mid] < target)
+                lo = mid + 1;
+            else
+                hi = mid - 1;
+        }
+        
+        int rightMost = -1;
+        
+        lo = 0;
+        hi = nums.size()-1;
+        while (lo <= hi) {
+            mid = (lo + hi)/2;
+            if (nums[mid] == target) {
+                rightMost = mid;
+                lo = mid + 1;
+            }
+            else if (nums[mid] < target)
+                lo = mid + 1;
+            else
+                hi = mid - 1;
+        }
+        
+        ans.push_back(leftMost);
+        ans.push_back(rightMost);
+        
+        return ans;
+    }
+};
